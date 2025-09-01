@@ -1,55 +1,52 @@
+#include "routing/routing.h"
+#include "server/server.h"
+#include <unistd.h>
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <netinet/in.h>
+
+#define BUFFER_SIZE 10000
+
+void launch(struct server *server);
 
 int main() {
 
-  int server_fd; 
-  int new_socket; 
+  struct server server = server_constructor(
+      // d   //p  // s         // int     //pr //ba //v
+      AF_INET, 0, SOCK_STREAM, INADDR_ANY, 80, 10, launch
+  );
 
-  struct sockaddr_in address; 
-
-  int opt = 1;  
-  int addrlen = sizeof(address); 
-  char buffer[40000] = {0}; 
-  
-  server_fd = socket(AF_INET, SOCK_STREAM, 0);
-  if (server_fd == 0) {
-    perror("Socket failed");
-    exit(EXIT_FAILURE);
-  }
-
-  address.sin_family = AF_INET;
-  address.sin_addr.s_addr = INADDR_ANY;
-  address.sin_port = htons(8080);
-
-  if (bind(server_fd, (struct sockaddr *) &address, sizeof(address)) < 0) {
-    perror("Bind failed");     
-    exit(EXIT_FAILURE);     
-  }
-
-  // from here start a while loop
-  // for multiple connections, 
-  // not just one
-  listen(server_fd, 3);
-  printf("listening on port 8080...\n");
-  new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
-  
-  read(new_socket, buffer, 40000);
-  printf("received request:\n%s\n", buffer);
-
-  const char *response =
-    "HTTP/1.1 200 OK\r\n"
-    "Content-Type: text/plain\r\n"
-    "Content-Length: 12\r\n"
-    "\r\n"
-    "nothing";
-
-  write(new_socket, response, strlen(response));
-  close(new_socket);
-  close(server_fd);
+  server.launch(&server);
 
   return 0;
+}
+
+void launch(struct server *server) {
+  char buffer[BUFFER_SIZE];
+  int addlen = sizeof(server->address);
+  // apprently the problem is here
+  // needs to be changed to an http
+  // header string
+  char *fuck = "fuck";
+  int new_socket;
+  // passing files
+  file("/", "index.html"); // indicating index page
+  inorder();
+
+  printf("fuck");
+  while(1) {
+    printf("waiting for connection\n");
+
+    // a new socket
+    new_socket = accept(
+        server->socket, 
+        (struct sockaddr *)&server->address, 
+        (socklen_t *)&addlen
+    );
+    memset(buffer, 0, BUFFER_SIZE * sizeof(char));
+    read(new_socket, buffer, 10000);
+    
+    printf("buffer: \n%s\n", buffer);
+    write(new_socket, fuck, strlen(fuck));
+    close(new_socket);
+  }
 }
