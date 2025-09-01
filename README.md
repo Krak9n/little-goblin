@@ -13,5 +13,8 @@ Your binaries will be under the name `little-goblin`.
 
 ### Usage 
 After following installation instructions simply run the compiled code.
-Change everything you want. Good Luck~.
+Change everything you want. 
+
+------------
+Good Luck~.
 </samp>
