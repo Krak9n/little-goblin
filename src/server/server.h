@@ -4,8 +4,11 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
+// had an error with 
+// accessing 1024 without 
+// root priviliges
 #define PORT 8080
-#define BUFFER_SIZE 10000
+#define BUFFER_SIZE 40000
 
 struct Server {
   int domain;
