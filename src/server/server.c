@@ -1,11 +1,12 @@
 #include "server.h"
 #include <stdio.h>
 #include <stdlib.h>
-struct server server_constructor(
+
+struct Server server_constructor(
     int domain, int protocol, int service, 
     u_long interface, int port, int backlog, 
-    void(*launch)(struct server *server)) {
-  struct server server;
+    void(*launch)(struct Server *server)) {
+  struct Server server;
 
   // creating parametrs needed
   // for server. use those, instead
@@ -21,12 +22,12 @@ struct server server_constructor(
   server.address.sin_port = htons(port);
   server.address.sin_addr.s_addr = htonl(interface);
 
-  server.socket = socket(domain, service, protocol);
-  if (server.socket = 0) {
-    perror("failed to connect to socket:\n");
+  if (0 ==  (server.socket = socket
+        (domain, service, protocol))) { 
+    perror("failed to connect to socket\n");
     exit(1);
   }
-
+  
   if (-1 == (bind(server.socket, 
       (struct sockaddr *)&server.address, 
       sizeof(server.address)))) {

@@ -4,7 +4,10 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-struct server {
+#define PORT 8080
+#define BUFFER_SIZE 10000
+
+struct Server {
   int domain;
   int protocol;
   int service;
@@ -17,13 +20,13 @@ struct server {
 
   int socket;
 
-  void (*launch)(struct server *server);
+  void (*launch)(struct Server *server);
 };
 
-struct server server_constructor(
+struct Server server_constructor(
     int domain, int protocol, int service, 
     u_long interface, int port, int backlog, 
-    void(*launch)(struct server *server)
+    void(*launch)(struct Server *server)
 );
 
 #endif 
