@@ -1,5 +1,5 @@
 #include "server/server.h"
-#include "http/request.h"
+//#include "http/request.h"
 #include <stdint.h>
 #include <errno.h>
 #include <stdlib.h>
@@ -7,16 +7,23 @@
 #include <stdio.h>
 #include <string.h>
 
+char *getFile(char *path);
+char *getFileType(char *path);
+void intToString(int num, char str[]);
 char *concat(char *help, char *hope); 
 void launch(struct Server *server);
 char* readfile(FILE *f);
 
-char *working = 
+char *type = 
   "HTTP/1.1 200 OK\r\n"
-  "Content-Type: text/html\r\n"
-  "Content-Length: " ;
+  "Content-Type: text/plain\r\n"; // should be something else later
+                                  // f.e. content-type: %s and in method 
+                                  // getFile give it a damn type
 
-const char* notFound =
+char *length = 
+  "Content-Length: \r\n";
+
+char* notFound =
   "HTTP/1.1 404 Not Found\r\n"
   "Content-Type: text/plain\r\n"
   "Content-Length: 13\r\n"
@@ -40,19 +47,38 @@ void launch(struct Server *server) {
   int addlen = sizeof(server->address);
 
   int new_socket;
-  char *path = "../src/web/index.html";
+  /*
+   * will try to make server recognize 
+   * if file is css, js, png or ico
+  */
+  char *index_path = "../src/web/";
   //printf("%s\n", path);
-  FILE *fptr = fopen(path, "rb"); // for now in all states returns only
-                                              // a damn null pointer
+  //FILE *fptr = fopen(index_path, "rb"); // for now in all states returns only
+  //if (0 == path == NULL || strcmp(path, "/"))
+  //{
+  char *path = "../src/web/index.html";
+  //}                                           // a damn null pointer
   //printf("errno is %d: \n", errno);
+  char *f = getFile(index_path);
   char w[4] = "\r\n";
-  char *current = readfile(fptr);
-  char *output = (char*)malloc(1024); // perhaps won't need that
+  FILE *fptr = fopen(path, "r");
+  char *current = readfile(fptr); // returns a null because of non existing file
+  char *response = (char*)malloc(1024); // final response
 
-  concat(output, working);
-  concat(output, current);
-  concat(output, w);
+  char *temp = (char*)malloc(15);
+  char *store = (char*)malloc(123);
+  int length = strlen(current);
 
+  // goes into loop after
+  concat(response, type);
+  //concat(response, whole); // here later pass both with type defined 
+  intToString(length, store);
+  sprintf(temp, "Content-Length: %d", store); 
+  concat(response, temp);
+  concat(response, w);
+  concat(response, w);
+  concat(response, current);
+  
   while(1) {
     printf("active at --> http://localhost:8080/\n");
     printf("~~ WAITING FOR CONNECTION ~~\n");
@@ -77,11 +103,41 @@ void launch(struct Server *server) {
     } 
 
     if(NULL != current) {
-      write(new_socket, output, strlen(output));
+      write(new_socket, response, strlen(response));
     }
     close(new_socket);
   }
   fclose(fptr);
+}
+
+char *getFile(char *path) {
+ 
+  char *whole = (char*)malloc(154); // we ll see if it fails
+  char *type = (char*)malloc(130);
+  FILE *file = fopen(path + 1, "r"); // skips the leading "/"
+  if (NULL == file) {
+    file = fopen("../src/web/404.html", "r");
+
+    if (NULL == file) {
+      return notFound;
+    }
+  }
+
+  type = getFileType(path);
+  if (NULL == type) { 
+    type = "application/octet-stream";
+  } 
+
+  sprintf(
+      whole,  
+      "HTTP/1.1 200 OK\r\n"
+      "Content-Type: %s\r\n",
+      type
+  );
+
+  fclose(file);
+  return whole;
+
 }
 
 char* readfile(FILE *f) {
@@ -113,4 +169,67 @@ char* readfile(FILE *f) {
 char *concat(char *help, char *hope) {
   strcat(help, hope);
   return help;
+}
+
+void intToString(int num, char str[]) {
+  int i = 0, isNegative = 0;
+
+  if (num == 0) {
+    str[i++] = '0';
+    str[i] = '\0';
+    return;
+  }
+
+  if (num < 0) {
+    isNegative = 1;
+    num = -num;
+  }
+
+  while (num != 0) {
+    int digit = num % 10;
+    str[i++] = digit + '0';
+    num = num / 10;
+  }
+
+  if (isNegative)
+    str[i++] = '-';
+
+  str[i] = '\0';
+
+  int start = 0, end = i - 1;
+  while (start < end) {
+    char temp = str[start];
+    str[start] = str[end];
+    str[end] = temp;
+    start++;
+    end--;
+  }
+}
+
+char *getFileType(char *path) {
+  if (strstr(path, ".html")) {
+      return "text/html";
+  }
+
+  if (strstr(path, ".css")) {
+      return "text/css";
+  }
+  
+  if (strstr(path, ".js")) {
+      return "application/javascript";
+  }
+  
+  if (strstr(path, ".jpg") || strstr(path, ".jpeg")){ 
+      return "image/jpeg";
+  }
+  
+  if (strstr(path, ".png")) {
+      return "image/png";
+  }
+  
+  if (strstr(path, ".mp4")) {
+      return "video/mp4";
+  }
+  
+  return NULL; // Return NULL if no match is found
 }
