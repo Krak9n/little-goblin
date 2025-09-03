@@ -1,5 +1,5 @@
 <samp>
-Web server written entirely from scratch in C, and small part in x86 Assembly. 
+Small HTTP server written from scratch in C, and x86 Assembly. 
 Includes small page for generating passwords.
 
 ### Installation
