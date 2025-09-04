@@ -2,7 +2,7 @@
 Making small HTTP server from scratch in C.<!--, and x86 Assembly. 
 Includes small page for generating passwords.-->
 
-![](https://github.com/Krak9n/little-goblin/blob/main/pics/first-try.png)
+![](https://github.com/Krak9n/little-goblin/blob/master/pics/first-try.png)
 
 ### Prerequisites
 + CMake (version 3.13 or higher)
