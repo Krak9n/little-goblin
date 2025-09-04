@@ -1,5 +1,6 @@
 #include "server/server.h"
 #include "mime/mime.h"
+#include <dirent.h>
 #include "utils/utils.h"
 #include <stdint.h>
 #include <errno.h>
@@ -8,6 +9,7 @@
 #include <stdio.h>
 #include <string.h>
 
+char *iterate(char *path);
 void launch(struct Server *server);
 
 char *type = 
@@ -44,9 +46,10 @@ void launch(struct Server *server) {
    * will try to make server recognize 
    * if file is css, js, png or ico
   */
-  char *index_path = "../src/web/";
+  char *index_path = "../src/web";
   char *path = "../src/web/index.html";
   //printf("%s\n", path);
+  //char *path = iterate(index_path);
   FILE *fptr = fopen(path, "rb"); // for now in all states returns only
   //if (0 == path == NULL || strcmp(path, "/"))
   //{
@@ -87,7 +90,15 @@ void launch(struct Server *server) {
     memset(buffer, 0, BUFFER_SIZE * sizeof(char));
     read(new_socket, buffer, 10000);
     printf("~~ BUFFER ~~ \n%s\n", buffer);
-    
+   
+    // receiving an http request
+    //ssize_t bytes_received = recv(new_socket, buffer, BUFFER_SIZE - 1, 0);
+    //if (-1 == bytes_received) {
+    //    perror("failed to receive request\n");
+    //    close(new_socket);
+    //    exit(1);
+    //}
+
     //struct HTTPr requesting = http_constructor(buffer);
     // with rb mode
     if (NULL == body) {
@@ -103,4 +114,22 @@ void launch(struct Server *server) {
   fclose(fptr);
 }
 
+// path should be
+// ../src/web/
+char *iterate(char *path) {
+  struct dirent *de;  // needed for reading
 
+  DIR *dr = opendir(path);
+  char *files; // apperently will return segfault
+
+  if (NULL == dr) {
+    printf("could not open current directory\n");
+    exit(1);
+  }
+
+  while (NULL != (de = readdir(dr))) {
+    sprintf(files, "%s\n", de->d_name);
+  }
+
+  return files;
+}
