@@ -11,6 +11,7 @@ $ cmake --build build
 ```
 
 ### Information
+
 By default server listens on the port **8080**.
 ------------
 
