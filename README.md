@@ -1,33 +1,21 @@
-<samp>
-Making small HTTP server from scratch in C.<!--, and x86 Assembly. 
-Includes small page for generating passwords.-->
-
-
+Small HTTP server written from scratch in plain C.
 \
-![](https://github.com/Krak9n/little-goblin/blob/master/pics/first-try.png)
-
-### Prerequisites
-+ **CMake** (version 3.13 or higher)
+### Dependencies 
++ **CMake** >= 3.13
 + **GCC compiler**
 
 ### Installation
 ```
-$ mkdir build
-$ cd build
-# cmake ..
-$ make 
+$ cmake -B build
+$ cmake --build build
 ```
-Your binaries will be under the name `little-goblin`.
 
-### Usage 
-After following installation instructions simply run the compiled code.
-Change everything you want. 
-
+### Information
+By default server listens on the port **8080**.
 ------------
 
 Good Luck~.
 
-Also, credits to these amazing tutorials:
+Credits to these amazing people:
 + [by namishh](https://github.com/namishh/webby)
 + [by ryan radder](https://medium.com/@ryanradder0/building-an-http-server-from-scratch-a-journey-beyond-frameworks-28dc49e94a2a)
-</samp>
