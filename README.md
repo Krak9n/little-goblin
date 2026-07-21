@@ -1,5 +1,7 @@
 Small HTTP server written from scratch in plain C.
-\
+
+By default server listens on the port **8080**.
+
 ### Dependencies 
 + **CMake** >= 3.13
 + **GCC compiler**
@@ -9,10 +11,6 @@ Small HTTP server written from scratch in plain C.
 $ cmake -B build
 $ cmake --build build
 ```
-
-### Information
-
-By default server listens on the port **8080**.
 ------------
 
 Good Luck~.
