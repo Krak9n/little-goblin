@@ -6,7 +6,7 @@ char *getFile(char *path) {
   char *type = (char*)malloc(130);
   FILE *file = fopen(path + 1, "r"); // skips the leading "/"
   if (NULL == file) {
-    file = fopen("../src/web/404.html", "r");
+    file = fopen("src/web/404.html", "r");
 
     if (NULL == file) {
       sprintf(whole,   

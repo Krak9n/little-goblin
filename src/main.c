@@ -9,9 +9,6 @@
 #include <stdio.h>
 #include <string.h>
 
-char *iterate(char *path);
-void launch(struct Server *server);
-
 char *type = 
   "HTTP/1.1 200 OK\r\n"
   "Content-Type: text/html\r\n"  // should be something else later
@@ -25,18 +22,6 @@ char* notFound =
   "\r\n"
   "404 Not Found";
 
-int main() {
-
-  struct Server server = server_constructor(
-      // d   //p  // s         // int     //pr //ba //v
-      AF_INET, 0, SOCK_STREAM, INADDR_ANY, PORT, 10, launch
-  );
-
-  server.launch(&server);
-
-  return 0;
-}
-
 void launch(struct Server *server) {
   char buffer[BUFFER_SIZE];
   int addlen = sizeof(server->address);
@@ -46,8 +31,8 @@ void launch(struct Server *server) {
    * will try to make server recognize 
    * if file is css, js, png or ico
   */
-  char *index_path = "../src/web";
-  char *path = "../src/web/index.html";
+  char *index_path = "/src/web";
+  char *path = "/src/web/index.html";
   //printf("%s\n", path);
   //char *path = iterate(index_path);
   FILE *fptr = fopen(path, "rb"); // for now in all states returns only
@@ -76,7 +61,7 @@ void launch(struct Server *server) {
   concat(response, body); // body
   
   while(1) {
-    printf("active at --> http://localhost:8080/\n");
+    printf("Active at: http://localhost:8080/\n");
     printf("~~ WAITING FOR CONNECTION ~~\n");
 
     // a new socket
@@ -102,7 +87,7 @@ void launch(struct Server *server) {
     //struct HTTPr requesting = http_constructor(buffer);
     // with rb mode
     if (NULL == body) {
-      printf("index page wasnt opened\n");
+      printf("Index page wasn't opened.\n");
       write(new_socket, notFound, strlen(notFound));
     } 
 
@@ -115,7 +100,7 @@ void launch(struct Server *server) {
 }
 
 // path should be
-// ../src/web/
+// /src/web/
 char *iterate(char *path) {
   struct dirent *de;  // needed for reading
 
@@ -123,7 +108,7 @@ char *iterate(char *path) {
   char *files; // apperently will return segfault
 
   if (NULL == dr) {
-    printf("could not open current directory\n");
+    printf("Could not open current directory.\n");
     exit(1);
   }
 
@@ -133,3 +118,16 @@ char *iterate(char *path) {
 
   return files;
 }
+
+int main() {
+
+  struct Server server = server_constructor(
+      // d   //p  // s         // int     //pr //ba //v
+      AF_INET, 0, SOCK_STREAM, INADDR_ANY, PORT, 10, launch
+  );
+
+  server.launch(&server);
+
+  return 0;
+}
+
