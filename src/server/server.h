@@ -3,33 +3,34 @@
 
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-// had an error with 
-// accessing 1024 without 
-// root priviliges
-#define PORT 8080
-#define BUFFER_SIZE 40000
+typedef unsigned int uint;
 
-struct Server {
-  int domain;
-  int protocol;
-  int service;
-  u_long interface;
-  int port;
-  int backlog;
+typedef struct Server {
+	int domain;
+	int protocol;
+	uint port;
+	int backlog;
+	int service;
+	uint interface;
 
-  // ipv4 if im not mistaken
-  struct sockaddr_in address; 
+	uint socket;
 
-  int socket;
+	// For IPv4.
+	struct sockaddr_in address;
 
-  void (*launch)(struct Server *server);
-};
+	void (*launch)();
+} Server;
 
-struct Server server_constructor(
-    int domain, int protocol, int service, 
-    u_long interface, int port, int backlog, 
-    void(*launch)(struct Server *server)
-);
+Server server_constructor(
+						  int domain,
+						  int protocol,
+						  uint port,
+						  int backlog,
+						  int service,
+						  uint interface,
+						  void(*launch)(Server *server));
 
-#endif 
+#endif
