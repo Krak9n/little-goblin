@@ -1,5 +1,4 @@
-#ifndef SERVER_H
-#define SERVER_H
+#pragma once
 
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -18,19 +17,17 @@ typedef struct Server {
 
 	uint socket;
 
-	// For IPv4.
-	struct sockaddr_in address;
+	struct sockaddr_in ipv4_address;
+	struct sockaddr_in6 ipv6_address;
 
 	void (*launch)();
 } Server;
 
-Server server_constructor(
-						  int domain,
-						  int protocol,
-						  uint port,
-						  int backlog,
-						  int service,
-						  uint interface,
-						  void(*launch)(Server *server));
-
-#endif
+Server newServer(
+				 int domain,
+				 int protocol,
+				 uint port,
+				 int backlog,
+				 int service,
+				 uint interface,
+				 void(*launch)(Server *server));
