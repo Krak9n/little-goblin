@@ -41,7 +41,7 @@ void addPair(HashMap* this, char* key, void* value) {
 	++this->length;
 }
 
-void* getPair(HashMap* this, char* key) {
+void* getValue(HashMap* this, char* key) {
 	Pair* the_pair;
 	for (the_pair = this->pairs[hashcode(this, key)]; the_pair; the_pair = the_pair->next) {
 		if (!strcmp(the_pair->key, key)) {
@@ -58,6 +58,13 @@ void destroyHashMap(HashMap* this) {
 	}
 	free(this->pairs);
 	free(this);
+}
+
+void getWholeHashMap(HashMap* this) {
+	while (this->pairs != NULL) {
+		printf("%s: %s\n", (*this->pairs)->key, getValue(this, (*this->pairs)->key));
+		(*this->pairs) = (*this->pairs)->next;
+	}
 }
 
 size_t size(HashMap* this) {

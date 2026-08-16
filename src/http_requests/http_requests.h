@@ -27,8 +27,21 @@ static const char *HTTP_METHODS[] = {
 
 typedef struct HttpRequests {
 	uint method;
-	char *URI;
+	char* URI;
 	double httpVersion;
+	char* body;
+	HashMap* headers_head;
 } HttpRequests;
 
 HttpRequests newHttpRequests(const char* request_string);
+void parseHeaders(const char* header_fields_parsed);
+
+char* parseLastHeadersLine(const char *headers);
+
+typedef struct HeaderString {
+  char* string_v;
+  struct HeaderString *next;
+} HeaderString;
+
+void addHeaderString(HeaderString* h_s, const char* value);
+void clearHeaderString(HeaderString* h_s);

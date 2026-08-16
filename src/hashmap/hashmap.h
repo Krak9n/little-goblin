@@ -20,13 +20,14 @@ typedef struct Pair {
 
 typedef struct HashMap {
 	Pair** pairs;
-	uint capacity; //  length of list
-	uint length; // number of elements inside
+	uint capacity; // length of list
+	uint length;   // number of elements inside
 } HashMap;
 
 HashMap* newHashMap();
 static uint hashcode(HashMap* this, char* key);
 void addPair(HashMap* this, char* key, void* value);
-void* getPair(HashMap* this, char* key);
+void* getValue(HashMap* this, char* key);
 void destroyHashMap(HashMap *this);
 size_t size(HashMap* this);
+void getWholeHashMap(HashMap* this);

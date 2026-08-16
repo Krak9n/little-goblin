@@ -8,8 +8,9 @@ file(GLOB_RECURSE SOURCE_FILES src/*.c src/*.h)
 set(SOURCES
 	src/main.c
 	src/server/server.c
-	src/http/http.c
 	src/hashmap/hashmap.c
+	src/http_requests/http_requests.c
+	src/http_response/http_response.c
 )
 add_executable(${PROJECT_NAME}
 	${SOURCES}

@@ -1,11 +1,13 @@
 #include <string.h>
 #include <unistd.h>
 #include "server/server.h"
-#include "http/http.h"
+#include "http_requests/http_requests.h"
 #include "hashmap/hashmap.h"
 
 #define BUFFER_SIZE 30000
 #define PORT 8080
+
+const static char *status = "HTTP/1.1 200 OK\r\n";
 
 const char *read_file(const char* path) {
 	char *buffer = 0;
@@ -29,9 +31,9 @@ const char *read_file(const char* path) {
 
 void launch(Server *server) {
 	char buffer[BUFFER_SIZE];
-	const char *greeter = read_file("public/index.html");
-	int n_socket = 0;
+	int n_socket = {0};
 	int addrlen = sizeof(server->ipv4_address);
+	HttpRequests http_requests;
 
 	printf("Waiting for connection on port %d.\r\n", PORT);
 	for (;;) {
@@ -41,10 +43,20 @@ void launch(Server *server) {
 						(socklen_t *)&addrlen);
 		read(n_socket, buffer, BUFFER_SIZE);
 		printf("%s\r\n", buffer);
-
-		write(n_socket, greeter, strlen(greeter));
+		http_requests = newHttpRequests(buffer);
+		
+		page(http_requests, n_socket, buffer);
 		close(n_socket);
 	}
+}
+ 
+void page(HttpRequests* http_requests, int socket, const char* buffer) {
+	const char *greeter = read_file("public/index.html");
+	char* response;
+	strcpy(response, status);
+	strcat(buffer, response);
+
+	write(socket, buffer, strlen(buffer));
 }
 
 int main() {
