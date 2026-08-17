@@ -40,6 +40,11 @@ void launch(Server *server) {
 	int addrlen = sizeof(server->ipv4_address);
 	HttpRequests http_requests;
 
+	printf("here\n");
+	add_route("/", "index.html");
+	printf("not here\n");
+	add_route("/about", "about.html");
+
 	printf("Waiting for connection on port %d.\r\n", PORT);
 	for (;;) {
 		n_socket = accept(

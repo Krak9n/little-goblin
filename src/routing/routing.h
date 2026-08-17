@@ -1,16 +1,15 @@
 #pragma once
 
 #include <string.h>
+#include "hashmap/hashmap.h"
 
 typedef unsigned int uint;
 
-typedef struct Http {
-	
-} Http;
+typedef struct Routes {
+	uint length;
+	HashMap* routes;
+} Routes;
 
-typedef struct HttpServer {
-	
-} HttpServer;
-
-HttpServer newHttpServer(const char* status);
-char* response();
+void add_route(char* key, void* value);
+void init_routes();
+void print_routes();
