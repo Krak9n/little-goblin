@@ -2,18 +2,20 @@
 #include <unistd.h>
 #include "server/server.h"
 #include "http_requests/http_requests.h"
+#include "routing/routing.h"
 #include "hashmap/hashmap.h"
 
 #define BUFFER_SIZE 30000
 #define PORT 8080
 
-const static char *status = "HTTP/1.1 200 OK\r\n";
+int page(HttpRequests* http_requests, int socket, char* pass_buffer);
+const static char *status_success = "HTTP/1.1 200 OK\nContent-Type: text/html\n\n";
 
-const char *read_file(const char* path) {
-	char *buffer = 0;
-	long contents_length = 0;
+char *read_file(const char* path) {
+	char *buffer;
+	long contents_length;
 
-	FILE *file = fopen(path, "rb");
+	FILE *file = fopen(path, "rt");
 	if (file) {
 		fseek(file, 0, SEEK_END);
 		contents_length = ftell(file);
@@ -24,6 +26,9 @@ const char *read_file(const char* path) {
 			fread(buffer, 1, contents_length, file);
 		}
 		fclose(file);
+	}
+	if (*buffer) {
+		printf("File has been read!\n");
 	}
 
 	return buffer;
@@ -45,21 +50,25 @@ void launch(Server *server) {
 		printf("%s\r\n", buffer);
 		http_requests = newHttpRequests(buffer);
 		
-		page(http_requests, n_socket, buffer);
+		n_socket = page(&http_requests, n_socket, buffer);
 		close(n_socket);
 	}
 }
  
-void page(HttpRequests* http_requests, int socket, const char* buffer) {
-	const char *greeter = read_file("public/index.html");
-	char* response;
-	strcpy(response, status);
-	strcat(buffer, response);
+int page(HttpRequests* http_requests, int socket, char* pass_buffer) {
+	char *buffer = malloc(BUFFER_SIZE);
+	char *greeter = read_file("public/index.html");
+	strcpy(buffer, status_success);
+	strcat(buffer, greeter);
+	printf("\n%s\n", buffer);
 
 	write(socket, buffer, strlen(buffer));
+	return socket;
 }
 
 int main() {
+	char *path;
+	printf("Current path is: %s\n", getcwd(path, BUFFER_SIZE));
 	Server server = newServer(
 							  AF_INET, 0, PORT, 10,
 							  SOCK_STREAM, INADDR_ANY, launch);

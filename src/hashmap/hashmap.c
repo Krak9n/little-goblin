@@ -62,7 +62,8 @@ void destroyHashMap(HashMap* this) {
 
 void getWholeHashMap(HashMap* this) {
 	while (this->pairs != NULL) {
-		printf("%s: %s\n", (*this->pairs)->key, getValue(this, (*this->pairs)->key));
+		printf("entered pairs\n");
+		printf("%s: %s\n", ((*this->pairs)->key), (getValue(this, (*this->pairs)->key)));
 		(*this->pairs) = (*this->pairs)->next;
 	}
 }

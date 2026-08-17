@@ -2,6 +2,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "hashmap/hashmap.h"
 
 typedef unsigned int uint;
@@ -28,20 +29,21 @@ static const char *HTTP_METHODS[] = {
 typedef struct HttpRequests {
 	uint method;
 	char* URI;
-	double httpVersion;
+	double http_version;
 	char* body;
-	HashMap* headers_head;
+	HashMap* head;
 } HttpRequests;
 
 HttpRequests newHttpRequests(const char* request_string);
 void parseHeaders(const char* header_fields_parsed);
 
-char* parseLastHeadersLine(const char *headers);
+char* parse_last_line_headers(char *headers);
 
 typedef struct HeaderString {
   char* string_v;
   struct HeaderString *next;
 } HeaderString;
 
-void addHeaderString(HeaderString* h_s, const char* value);
+void addHeaderString(char* value);
 void clearHeaderString(HeaderString* h_s);
+bool isNull(void* value);

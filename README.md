@@ -1,7 +1,8 @@
 **I am currently rewriting this project. WIP.**   
   
 Small HTTP server written from scratch in plain C.    
-  
+Implemented from scratch HashMaps and thinking about adding Arena allocators, not sure though.  
+
 By default server listens on the port **8080**.    
   
 ### PREREQUISITES

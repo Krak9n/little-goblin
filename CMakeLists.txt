@@ -10,7 +10,7 @@ set(SOURCES
 	src/server/server.c
 	src/hashmap/hashmap.c
 	src/http_requests/http_requests.c
-	src/http_response/http_response.c
+	src/routing/routing.c
 )
 add_executable(${PROJECT_NAME}
 	${SOURCES}
