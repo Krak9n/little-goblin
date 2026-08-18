@@ -1,7 +1,12 @@
 **I am currently rewriting this project. WIP.**   
   
-Small HTTP server written from scratch in plain C.    
-Implemented from scratch HashMaps and thinking about adding Arena allocators, not sure though.  
+HTTP server written from scratch in C99.    
+Plan to implement:
++ hashmaps [implemented]  
++ arena allocator   
++ multithreading  
++ mime types  
++ routing  
 
 By default server listens on the port **8080**.    
   

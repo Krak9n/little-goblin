@@ -12,6 +12,7 @@ set(SOURCES
 	src/http_requests/http_requests.c
 	src/routing/routing.c
 	src/mime/mime.c
+	src/arena/arena.c
 )
 add_executable(${PROJECT_NAME}
 	${SOURCES}
