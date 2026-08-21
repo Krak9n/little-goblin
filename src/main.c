@@ -9,6 +9,8 @@
 #include "http_responses/http_responses.h"
 
 #define PORT 8080
+// Could be changed though
+static char *status = "HTTP/1.1 200 OK\nContent-Type: text/html\n";
 
 void launch(Server *server) {
 	char buffer[BUFFER_SIZE];
@@ -26,10 +28,24 @@ void launch(Server *server) {
 						(struct sockaddr *)&server->ipv4_address,
 						(socklen_t *)&addrlen);
 		read(n_socket, buffer, BUFFER_SIZE);
-		printf("%s\r\n", buffer);
 		http_requests = newHttpRequests(buffer);
+
+		// should be sending response here
+		char *buffer = malloc(BUFFER_SIZE);
+		char *greeter = read_file("public/index.html");
+		strcpy(buffer, status);
+		strcat(buffer, greeter);
+
+		printf("\n== Response ==\n");
+		printf("%s\n", buffer);
+
+		write(n_socket, buffer, strlen(buffer));
+		/*
+		  HttpResponse* response = newHttpResponse(filename, status, http_requests);
+		  // (socket, buffer, size, flags)
+		  send(n_socket, response->body, response->size, 0);
+		*/
 		
-		n_socket = page(&http_requests, n_socket, buffer, "public/index.html");
 		close(n_socket);
 	}
 }

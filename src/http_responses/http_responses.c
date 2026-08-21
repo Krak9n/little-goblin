@@ -30,7 +30,6 @@ const char* mime_type(const char* path) {
 	else return "application/octet-stream";
 }
 
-
 char *read_file(const char* path) {
 	char *buffer;
 	long contents_length;
@@ -54,15 +53,7 @@ char *read_file(const char* path) {
 	return buffer;
 }
 
-
-int page(HttpRequests* http_requests, int socket, char* pass_buffer, char* path) {
-	char *buffer = malloc(BUFFER_SIZE);
-	char *greeter = read_file(path);
-	strcpy(buffer, status_success);
-	strcat(buffer, greeter);
-	printf("\n%s\n", buffer);
-
-	write(socket, buffer, strlen(buffer));
-	return socket;
+HttpResponse* newHttpResponse(char* filename, char* status, HttpRequests* http_requests) {
+	HttpResponse* response;
+	return response;
 }
-

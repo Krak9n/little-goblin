@@ -108,6 +108,7 @@ HttpRequests newHttpRequests(const char *request_string) {
 		}
 	}
 
+	printf("\n-- Request --\n");
 	char* request_line = strtok(requested, "\n");
 	if (request_line != NULL) {
 		printf("Request line: %s\n", request_line);

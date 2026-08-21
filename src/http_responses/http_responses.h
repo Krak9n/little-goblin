@@ -7,9 +7,12 @@
 
 #define BUFFER_SIZE 30000
 
-int page(HttpRequests* http_requests, int socket, char* pass_buffer, char* path);
+typedef struct HttpResponse {
+	char* status;
+	char* body;
+	size_t size;
+} HttpResponse;
+
 char *read_file(const char* path);
 const char* mime_type(const char* path);
-
-static const char *status_success = "HTTP/1.1 200 OK\nContent-Type: text/html\n\n";
-
+HttpResponse* newHttpResponse(char* filename, char* status, HttpRequests* http_requests);
