@@ -7,12 +7,14 @@
 
 #define BUFFER_SIZE 30000
 
+typedef unsigned int u_int;
+
 typedef struct HttpResponse {
 	char* status;
 	char* body;
-	size_t size;
+	u_int size;
 } HttpResponse;
 
 char *read_file(const char* path);
-const char* mime_type(const char* path);
+char* mime_type(const char* path);
 HttpResponse* newHttpResponse(char* filename, char* status, HttpRequests* http_requests);

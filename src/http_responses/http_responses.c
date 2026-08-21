@@ -2,8 +2,8 @@
 
 // So basically I could just create some sort of linked list and just check
 // it for having this particular file extensions that is present in Content-Type?
-const char* mime_type(const char* path) {
-	char* extension = strrchr(path, '.');
+char* mime_type(const char* path) {
+	char* extension = strrchr(path, '.') + 1;
 	if (extension == NULL) {
 		printf("No file extension detected!");
 		return "";
@@ -55,5 +55,49 @@ char *read_file(const char* path) {
 
 HttpResponse* newHttpResponse(char* filename, char* status, HttpRequests* http_requests) {
 	HttpResponse* response;
+	printf("1\n");
+	u_int response_length = {0};
+
+	printf("2\n");
+	char* hold_response;
+
+	printf("3\n");
+	char* response_line = ("%sContent-Type:%s\r\n\r\n", status, mime_type(filename));
+	printf("r: %s\n", response_line);
+	printf("after response line\n");
+	memcpy(
+		   hold_response,
+		   response_line,
+		   sizeof(response_line) * sizeof(char));
+
+	printf("4\n");
+	printf("response after memcpy: %s\n", hold_response);
+	char* file_buffer = read_file(filename);
+	printf("%s\n", file_buffer);
+
+	printf("5\n");
+
+	memcpy(
+		   hold_response + strlen(hold_response),
+		   file_buffer,
+		   strlen(file_buffer));
+
+	printf("6\n");
+	response_length += strlen(hold_response);
+	
+	printf("7\n");
+	response->body = hold_response;
+
+	printf("8\n");
+	response->size = response_length;
+
+	printf("9\n");
+	response->status = status;
+
+	printf("10\n");
+	
+	printf("== Response ==\n%s\n", response->body);
+	// arena guys
+	free(hold_response);
 	return response;
 }

@@ -17,6 +17,7 @@ void launch(Server *server) {
 	int n_socket = {0};
 	int addrlen = sizeof(server->ipv4_address);
 	HttpRequests http_requests;
+	HttpResponse* response;
 
 	//	add_route("/", "index.html");
 	//add_route("/about", "about.html");
@@ -30,21 +31,9 @@ void launch(Server *server) {
 		read(n_socket, buffer, BUFFER_SIZE);
 		http_requests = newHttpRequests(buffer);
 
-		// should be sending response here
-		char *buffer = malloc(BUFFER_SIZE);
-		char *greeter = read_file("public/index.html");
-		strcpy(buffer, status);
-		strcat(buffer, greeter);
-
-		printf("\n== Response ==\n");
-		printf("%s\n", buffer);
-
-		write(n_socket, buffer, strlen(buffer));
-		/*
-		  HttpResponse* response = newHttpResponse(filename, status, http_requests);
-		  // (socket, buffer, size, flags)
-		  send(n_socket, response->body, response->size, 0);
-		*/
+		response = newHttpResponse("public/index.html", status, &http_requests);
+		// (socket, buffer, size, flags)
+		send(n_socket, response->body, response->size, 0);
 		
 		close(n_socket);
 	}
