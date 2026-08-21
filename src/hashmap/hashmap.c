@@ -10,7 +10,7 @@ HashMap* newHashMap() {
 }
 
 // Definition here: https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function
-static uint hashcode(HashMap* this, char* key) {
+static u_int hashcode(HashMap* this, char* key) {
 	l_uint code = FNV_OFFSET_BASIS;
 	for (const char* val = key; *val; ++val) {
 		code ^= *val;
@@ -53,7 +53,7 @@ void* getValue(HashMap* this, char* key) {
 }
 
 void destroyHashMap(HashMap* this) {
-	for (uint i = 0; i < this->capacity; ++i) {
+	for (u_int i = 0; i < this->capacity; ++i) {
 		free(this->pairs[i]->key);
 	}
 	free(this->pairs);

@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include "hashmap/hashmap.h"
 
-typedef unsigned int uint;
+typedef unsigned int u_int;
 
 enum HttpMethods {
 	GET,
@@ -27,7 +27,7 @@ static const char *HTTP_METHODS[] = {
 };
 
 typedef struct HttpRequests {
-	uint method;
+	u_int method;
 	char* URI;
 	double http_version;
 	char* body;

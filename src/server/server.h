@@ -5,17 +5,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef unsigned int uint;
+typedef unsigned int u_int;
 
 typedef struct Server {
 	int domain;
 	int protocol;
-	uint port;
+	u_int port;
 	int backlog;
 	int service;
-	uint interface;
+	u_int interface;
 
-	uint socket;
+	u_int socket;
 
 	struct sockaddr_in ipv4_address;
 	struct sockaddr_in6 ipv6_address;
@@ -26,8 +26,8 @@ typedef struct Server {
 Server newServer(
 				 int domain,
 				 int protocol,
-				 uint port,
+				 u_int port,
 				 int backlog,
 				 int service,
-				 uint interface,
+				 u_int interface,
 				 void(*launch)(Server *server));

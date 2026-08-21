@@ -26,7 +26,8 @@ void removeElement(Vector* vector, u_int position) {
 	vector->size -= 1;
 	// could use size though
 	for (size_t i = 0; i < (sizeof(vector->held_data) / sizeof(vector->held_data[0])); ++i) {
-		memmove(&vector->held_data[i - 1], &vector->held_data, vector->held_data[i - 1] * sizeof(void *));
+		memmove(&vector->held_data[i - 1], &vector->held_data, ((vector->size - i) * sizeof(*vector->held_data)));
+		memset(&vector->held_data[vector->size - i], 0, i * sizeof(*vector->held_data));
 	}
 }
 
@@ -35,7 +36,7 @@ void* getElement(Vector* vector, u_int position) {
 		printf("Called index is greater than the vector's size. Please change the index before calling a function.");
 		exit(1);
 	}
-	return vector->held_data[posiition];
+	return vector->held_data[position];
 }
 
 Vector* newVector() {

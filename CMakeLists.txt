@@ -10,8 +10,9 @@ set(SOURCES
 	src/server/server.c
 	src/hashmap/hashmap.c
 	src/http_requests/http_requests.c
+	src/http_responses/http_responses.c
 	src/routing/routing.c
-	src/mime/mime.c
+	src/vector/vector.c
 	src/arena/arena.c
 )
 add_executable(${PROJECT_NAME}

@@ -2,7 +2,7 @@
 
 // Currently uses IPv4 by default. Later will the user to specify the protocol version.
 // Or to decide it dynamically somehow.
-Server newServer(int domain, int protocol, uint port, int backlog, int service, uint interface, void(*launch)(Server *server)) {
+Server newServer(int domain, int protocol, u_int port, int backlog, int service, u_int interface, void(*launch)(Server *server)) {
 	Server server;
 
 	server.domain = domain;

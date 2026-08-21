@@ -4,7 +4,8 @@ HTTP server written from scratch in C99.
   
 Plan to implement:
 + hashmaps [implemented]  
-+ arena allocator   
++ vector [implemented]
++ arena allocator 
 + multithreading  
 + mime types  
 + routing  

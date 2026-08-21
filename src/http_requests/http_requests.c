@@ -102,7 +102,7 @@ HttpRequests newHttpRequests(const char *request_string) {
 		printf("Failed to allocated memory for the main string.\n");
 		exit(1);
 	}
-	for (uint i = 0; i < strlen(requested); ++i) {
+	for (u_int i = 0; i < strlen(requested); ++i) {
 		if (requested[i] == '\n' && requested[i+1] == '\n') {
 			requested[i + 1] = '|';
 		}
@@ -121,7 +121,7 @@ HttpRequests newHttpRequests(const char *request_string) {
 	}
 
 	// Currently not needed.
-	for (uint method_definition = GET; method_definition <= PRI; ++method_definition) {
+	for (u_int method_definition = GET; method_definition <= PRI; ++method_definition) {
 		if (!strcmp(method, HTTP_METHODS[method_definition])) {
 			printf("Used method: %s\n", HTTP_METHODS[method_definition]);
 		}
